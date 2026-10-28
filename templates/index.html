@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Форма поста</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='site.css')}}">
+</head>
+<body>
+    <div>
+        <h3>Форма с POST и многострочное поле.</h3>
+        <form action="/add" method="post">
+            <input type="text" name="title" placeholder="Заголовок">
+            <textarea name="text" placeholder="Текст поста"></textarea>
+            <button type="submit">Опубликовать</button>
+        </form>
+    </div>
+</body>
+</html>

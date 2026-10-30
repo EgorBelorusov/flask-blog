@@ -6,13 +6,14 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='site.css') }}">
 </head>
 <body>
-    {% if posts %}
-        {% for post in posts %}
-            <p>Заголовок пост: {{post.title}}</p>
-            <p>Текст поста: {{post.text}}</p>
+    {% if result %}
+        {% for post in result %}
+            <p>Заголовок пост: {{post["title"]}}</p>
+            <p>Текст поста: {{post["text"]}}</p>
         {% endfor %}
     {% else %}
         <p>Постов нет.</p>
     {% endif %}
+
 </body>
 </html>

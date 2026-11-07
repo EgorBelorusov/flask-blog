@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, redirect, url_for
-from db import init_db, get_posts, add_post
+from db import init_db, get_posts, add_post, delete_posts
 
 app = Flask(__name__)
 
@@ -32,6 +32,12 @@ def add():
 
 
 
+
+@app.route("/delete/<int:post_id>", methods=["Post"])
+def delete(post_id):
+    delete_posts(post_id)
+
+    return redirect(url_for("view_posts"))
 
 
 if __name__ == "__main__":

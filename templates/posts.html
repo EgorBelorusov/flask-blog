@@ -10,6 +10,9 @@
         {% for post in result %}
             <p>Заголовок пост: {{post["title"]}}</p>
             <p>Текст поста: {{post["text"]}}</p>
+            <form action="/delete/{{ post['id'] }}" method="post">
+                <button type="submit">Удалить</button>
+            </form>
         {% endfor %}
     {% else %}
         <p>Постов нет.</p>

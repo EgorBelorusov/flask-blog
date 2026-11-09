@@ -2,8 +2,10 @@ import sqlite3
 
 
 
+DB_NAME = "blog.db"
+
 def init_db():
-    connection = sqlite3.connect("blog.db")
+    connection = sqlite3.connect(DB_NAME)
     cursor = connection.cursor()
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS posts(
@@ -16,19 +18,18 @@ def init_db():
     connection.commit()
     connection.close()
 
-    return "Выполнено!"
 
 
 
 
 
 def get_posts():
-    connection = sqlite3.connect("blog.db")
+    connection = sqlite3.connect(DB_NAME)
     connection.row_factory = sqlite3.Row
     cursor = connection.cursor()
     cursor.execute("SELECT * FROM posts ORDER BY id DESC")
     posts = cursor.fetchall()
-    connection.close()
+
     return posts
 
 
@@ -36,11 +37,22 @@ def get_posts():
 
 
 def add_post(title, text):
-    connection = sqlite3.connect("blog.db")
-    cursor = connection.cursor()
     if title:
+        connection = sqlite3.connect(DB_NAME)
+        cursor = connection.cursor()
         cursor.execute("INSERT INTO posts (title, text) VALUES (?, ?)", (title, text))
         connection.commit()
+        connection.close()
+
+
+
+
+
+def delete_posts(post_id):
+    connection = sqlite3.connect(DB_NAME)
+    cursor = connection.cursor()
+    cursor.execute("DELETE FROM posts WHERE id = ?", (post_id,))
+    connection.commit()
     connection.close()
 
-    return
+

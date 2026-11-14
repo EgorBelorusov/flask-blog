@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Пользователи</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='site.css') }}">
+</head>
+<body>
+    <div>
+        {% if users %}
+        {% for user in users %}
+            <p>{{user["name"]}}</p>
+            <p>{{user["surname"]}}</p>
+            <p>{{user["email"]}}</p>
+
+        {% endfor %}
+    {% else %}
+        <p>Пользователей нет.</p>
+    {% endif %}
+    </div>
+</body>
+</html>

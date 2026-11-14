@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='site.css')}}">
+</head>
+<body>
+    <p>Форма регистрации</p>
+    <div>
+        {% if error %}
+            <p>{{error}}</p>
+        {% endif %}
+    </div>
+    <form action="/register" method="post">
+        <input type="text" name="surname" value="{{surname}}" placeholder="Введите фамилию">
+        <input type="text" name="name" value="{{name}}" placeholder="Введите имя">
+        <input type="text" name="patronymic" placeholder="Введите отчество">
+        <input type="email" name="email" value="{{ email }}" placeholder="Введите почту">
+        <input type="password" name="password" placeholder="Введите пароль">
+        <input type="password" name="password_repid" placeholder="Повторите пароль">
+        <button type="submit">Зарегистрироваться</button>
+    </form>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

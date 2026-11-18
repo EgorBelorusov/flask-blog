@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, redirect, url_for
-from db import init_db, get_posts, add_post, delete_posts, add_users, get_users
+from db import init_db, get_posts, add_post, delete_posts, add_users
 from werkzeug.security import generate_password_hash
 
 app = Flask(__name__)
@@ -8,16 +8,8 @@ init_db()
 
 @app.route("/")
 def index():
-    return render_template("index.html")
-
-
-
-
-
-@app.route('/posts')
-def view_posts():
     result = get_posts()
-    return render_template("posts.html", result=result)
+    return render_template("index.html", result=result)
 
 
 
@@ -26,13 +18,6 @@ def view_posts():
 def registration():
     return render_template("register.html")
 
-
-
-
-@app.route("/users")
-def view_users():
-    users = get_users()
-    return render_template("users.html", users=users)
 
 
 
@@ -48,24 +33,24 @@ def register():
     password_hash = generate_password_hash(password)
 
     if password != password_repid:
-        return render_template("register.html", error="Пароли не совпали", email=email, surname=surname, name=name)
+        return render_template("register.html", error="Пароли не совпали", email=email, surname=surname, name=name, patronymic=patronymic)
 
     if len(password) < 8:
-        return render_template("register.html", error="Пароль меньше 8 символов", email=email, surname=surname, name=name)
+        return render_template("register.html", error="Пароль меньше 8 символов", email=email, surname=surname, name=name, patronymic=patronymic)
 
     if not surname:
-        return render_template("register.html", error="Пустое поле 'Фамилия'", email=email, surname=surname, name=name)
+        return render_template("register.html", error="Пустое поле 'Фамилия'", email=email, surname=surname, name=name, patronymic=patronymic)
 
     if not name:
-        return render_template("register.html", error="Пустое поле 'Имя'", email=email, surname=surname, name=name)
+        return render_template("register.html", error="Пустое поле 'Имя'", email=email, surname=surname, name=name, patronymic=patronymic)
 
     if not email:
-        return render_template("register.html", error="Пустое поле 'Почта'", email=email, surname=surname, name=name)
+        return render_template("register.html", error="Пустое поле 'Почта'", email=email, surname=surname, name=name, patronymic=patronymic)
 
     add = add_users(surname, name, patronymic, email, password_hash)
 
     if not add:
-        return render_template("register.html", error="Почта занята", email=email, surname=surname, name=name)
+        return render_template("register.html", error="Почта занята", email=email, surname=surname, name=name, patronymic=patronymic)
 
 
 
@@ -79,7 +64,7 @@ def add():
     text = request.form.get("text", "").strip() # сервер находит данные из большого текстового поля (textarea) по его имени name="text" и сохраняет их в переменную text
     add_post(title, text)
 
-    return redirect(url_for("view_posts")) # перенаправляет на другой адрес, а url_for возвращает адрес который привязан к функции в скобках
+    return redirect(url_for("index")) # перенаправляет на другой адрес, а url_for возвращает адрес который привязан к функции в скобках
 
 
 
@@ -88,7 +73,7 @@ def add():
 def delete(post_id):
     delete_posts(post_id)
 
-    return redirect(url_for("view_posts"))
+    return redirect(url_for("index"))
 
 
 if __name__ == "__main__":

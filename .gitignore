@@ -2,4 +2,3 @@
 .idea/
 blog.db
 __pycache__/
-client.py

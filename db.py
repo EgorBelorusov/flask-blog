@@ -43,17 +43,6 @@ def get_posts():
 
 
 
-def get_users():
-    connection = sqlite3.connect(DB_NAME)
-    connection.row_factory = sqlite3.Row
-    cursor = connection.cursor()
-    cursor.execute("SELECT * FROM users ORDER BY id DESC")
-    users = cursor.fetchall()
-
-    return users
-
-
-
 
 
 def add_post(title, text):

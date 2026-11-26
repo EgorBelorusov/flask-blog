@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='site.css')}}">
+</head>
+<body>
+    <div>
+        <p>Вход</p>
+            <div>
+                {% if error %}
+                    <p>{{error}}</p>
+                {% endif %}
+            </div>
+        <form action="/login" method="post">
+            <input type="email" name="user_email" value="{{user_email}}" placeholder="Введите почту">
+            <input type="password" name="user_password" placeholder="Введите пароль">
+            <button type="submit">Войти</button>
+        </form>
+    </div>
+</body>
+</html>

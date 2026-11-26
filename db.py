@@ -1,5 +1,7 @@
 import sqlite3
 
+
+
 DB_NAME = "blog.db"
 
 def init_db():
@@ -40,6 +42,29 @@ def get_posts():
     posts = cursor.fetchall()
 
     return posts
+
+
+
+
+def get_user_by_email(email):
+    connection = sqlite3.connect(DB_NAME)
+    connection.row_factory = sqlite3.Row
+
+    try:
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM users WHERE email=?", (email,))
+        user = cursor.fetchone()
+
+        if user is None:
+            return None
+
+        return user
+
+
+    finally:
+        connection.close()
+
+
 
 
 

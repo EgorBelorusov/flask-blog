@@ -1,4 +1,8 @@
 .venv
 .idea/
 blog.db
+.env
 __pycache__/
+UsersBase.db
+check_login.py
+session_demo.py

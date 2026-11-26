@@ -1,10 +1,24 @@
-from flask import Flask, request, render_template, redirect, url_for
-from db import init_db, get_posts, add_post, delete_posts, add_users
+from werkzeug.security import check_password_hash
+from flask import Flask, request, render_template, redirect, url_for, session
+from db import init_db, get_posts, add_post, delete_posts, add_users, get_user_by_email
 from werkzeug.security import generate_password_hash
+from dotenv import load_dotenv
+import os
+
+
+
 
 app = Flask(__name__)
 
+load_dotenv()
+app.secret_key = os.getenv("SECRET_KEY")
+
+if app.secret_key is None or not app.secret_key:
+    raise RuntimeError("SECRET_KEY не задан в .env")
+
+
 init_db()
+
 
 @app.route("/")
 def index():
@@ -14,9 +28,43 @@ def index():
 
 
 
+
 @app.route("/register")
 def registration():
     return render_template("register.html")
+
+
+
+
+
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
+
+
+
+
+@app.route("/login", methods=["POST"])
+def authenticate_user():
+    user_email = request.form.get("user_email", "").strip().lower()
+    user_password = request.form.get("user_password", "")
+
+    if not user_email:
+        return render_template("login.html", error="Введите почту", user_email=user_email)
+
+    if not user_password:
+        return render_template("login.html", error="Введите пароль", user_email=user_email)
+
+    user = get_user_by_email(user_email)
+
+    if user is None or not check_password_hash(user["password_hash"], user_password):
+        return render_template("login.html", error="Неправильная почта или пароль", user_email=user_email)
+
+    session.clear()
+    session["user_id"] = user["id"]
+
+    return redirect(url_for("index"))
 
 
 
@@ -58,6 +106,8 @@ def register():
 
 
 
+
+
 @app.route("/add", methods=["POST"])
 def add():
     title = request.form.get("title", "").strip() # сервер находит данные из текстового поля (input) по его имени name="title" и сохраняет их в переменную title
@@ -65,6 +115,7 @@ def add():
     add_post(title, text)
 
     return redirect(url_for("index")) # перенаправляет на другой адрес, а url_for возвращает адрес который привязан к функции в скобках
+
 
 
 
